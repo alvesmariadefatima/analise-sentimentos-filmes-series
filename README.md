@@ -67,7 +67,7 @@ pip install -r requirements.txt
 O modelo de análise de sentimentos deve ser treinado com uma base de dados antes de ser usado. Caso já tenha o modelo treinado (arquivo `.pkl`), você pode pular essa etapa. Caso contrário, execute o script para treinar o modelo:
 
 ```bash
-python train_model.py
+python api/treinar_modelo.py
 ```
 
 ### **4. Rodar a API**
@@ -75,14 +75,14 @@ python train_model.py
 Para rodar a aplicação Flask localmente, execute o comando abaixo:
 
 ```bash
-python app.py
+python api/app.py
 ```
 
 A API estará disponível em `http://127.0.0.1:5000/`.
 
 ### **5. Acesse o Frontend**
 
-Abra o arquivo `index.html` em um navegador ou crie um servidor para servir a página HTML (se estiver usando Flask, o frontend já será servido pela API). Em seguida, insira um comentário no campo de texto e envie para obter a análise de sentimento.
+Abra o arquivo `frontend/index.html` em um navegador ou crie um servidor para servir a página HTML (se estiver usando Flask, o frontend já será servido pela API). Em seguida, insira um comentário no campo de texto e envie para obter a análise de sentimento.
 
 ---
 
