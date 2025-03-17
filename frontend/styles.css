@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    padding: 20px;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 500px; /* Ajuste para desktop */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os elementos */
+}
+
+textarea {
+    width: 100%;
+    max-width: 450px; /* Garante que o textarea não fique maior que a container */
+    height: 150px; /* Mantém a altura fixa */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none; /* Impede redimensionamento */
+    font-size: 16px;
+    text-align: center; /* Centraliza o texto dentro do textarea */
+}
+
+button {
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 14px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* 🔹 Responsividade para telas menores */
+@media (max-width: 600px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    textarea, button {
+        max-width: 100%;
+    }
+}

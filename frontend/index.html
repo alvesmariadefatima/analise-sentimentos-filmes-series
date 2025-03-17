@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Sentimentos de Filmes e Séries</title>
+    <link rel="stylesheet" href="/frontend/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎥 Análise de Sentimentos de Comentários para Filmes e Séries</h1>
+        <textarea id="userInput" placeholder="Digite um texto para análise..."></textarea>
+        <button onclick="analyzeSentiment()">Analisar</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        async function analyzeSentiment() {
+            const text = document.getElementById("userInput").value;
+            if (!text) {
+                alert("Por favor, insira um texto!");
+                return;
+            }
+
+            const response = await fetch("http://127.0.0.1:5000/analyze", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: text })
+            });
+
+            const data = await response.json();
+            document.getElementById("result").innerText = `Sentimento: ${data.sentiment} (Confiança: ${data.confidence})`;
+        }
+    </script>
+</body>
+</html>
