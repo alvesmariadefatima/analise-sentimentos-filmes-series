@@ -36,11 +36,11 @@ def analyze_sentiment():
 
     # ✅ Definir sentimento com base na probabilidade
     if positivo_prob > 0.6:
-        sentimento = "positivo"
+        sentimento = "positivo 😊"
     elif positivo_prob < 0.4:
-        sentimento = "negativo"
+        sentimento = "negativo 😞"
     else:
-        sentimento = "neutro"
+        sentimento = "neutro 😐"
 
     return jsonify({"sentiment": sentimento, "confidence": f"{positivo_prob:.2f}"})
 
