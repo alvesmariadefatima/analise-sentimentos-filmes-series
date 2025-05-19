@@ -1,6 +1,6 @@
 # 🎥 **Análise de Sentimentos de Comentários de Filmes e Séries**
 
-Este projeto tem como objetivo realizar a **análise de sentimentos** em comentários de filmes e séries, utilizando técnicas de **processamento de linguagem natural (NLP)** e **machine learning** para classificar os sentimentos como **positivos**, **negativos** ou **neutros**. Ele oferece uma plataforma onde os usuários podem inserir seus próprios comentários e obter a avaliação do sentimento presente.
+Este projeto tem como objetivo realizar a **análise de sentimentos** em comentários de filmes e séries, utilizando técnicas de **processamento de linguagem natural (NLP)** e **Machine Learning** para classificar os sentimentos como **positivos**, **negativos** ou **neutros**. Ele oferece uma plataforma onde os usuários podem inserir seus próprios comentários e obter a avaliação do sentimento presente.
 
 ---
 
@@ -67,7 +67,7 @@ pip install -r requirements.txt
 O modelo de análise de sentimentos deve ser treinado com uma base de dados antes de ser usado. Caso já tenha o modelo treinado (arquivo `.pkl`), você pode pular essa etapa. Caso contrário, execute o script para treinar o modelo:
 
 ```bash
-python api/treinar_modelo.py
+python api/train_model.py
 ```
 
 ### **4. Rodar a API**
@@ -82,7 +82,7 @@ A API estará disponível em `http://127.0.0.1:5000/`.
 
 ### **5. Acesse o Frontend**
 
-Abra o arquivo `frontend/index.html` em um navegador ou crie um servidor para servir a página HTML (se estiver usando Flask, o frontend já será servido pela API). Em seguida, insira um comentário no campo de texto e envie para obter a análise de sentimento.
+Abra o arquivo `index.html` em um navegador ou crie um servidor para servir a página HTML (se estiver usando Flask, o frontend já será servido pela API). Em seguida, insira um comentário no campo de texto e envie para obter a análise de sentimento.
 
 ---
 
@@ -115,4 +115,3 @@ Se você deseja contribuir para o projeto, siga as etapas abaixo:
 Este projeto está licenciado sob a **MIT License**. Veja o arquivo `LICENSE` para mais detalhes.
 
 ---
-
