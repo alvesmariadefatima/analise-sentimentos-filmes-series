@@ -4,11 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análise de Sentimentos de Filmes e Séries</title>
-    <link rel="stylesheet" href="/frontend/styles.css">
+    <link rel="stylesheet" href="C:\Users\arthu\Desktop\vital topicos\projeto.css">
+    <style>
+        :root {
+            --fundo: #1B2430;
+            --laranja: #f57524;
+            --azul-claro: #3081bf;
+            --texto: #ffffff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: var(--fundo);
+            color: var(--texto);
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .filme-img {
+            width: 250px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            color: var(--laranja);
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            resize: none;
+            border: 2px solid var(--azul-claro);
+            border-radius: 8px;
+            background-color: #2e3a4a;
+            color: var(--texto);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--laranja);
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: var(--laranja);
+            color: var(--fundo);
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--azul-claro);
+            color: #fff;
+        }
+
+        #result {
+            margin-top: 25px;
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--laranja);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>🎥 Análise de Sentimentos de Comentários para Filmes e Séries</h1>
+
+        <!-- Exemplo de imagem (opcional) -->
+        <!-- <img src="URL_DA_IMAGEM" alt="Filme" class="filme-img"> -->
+
         <textarea id="userInput" placeholder="Digite um texto para análise..."></textarea>
         <button onclick="analyzeSentiment()">Analisar</button>
         <p id="result"></p>
