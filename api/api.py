@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import joblib
 import os
-import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -55,19 +54,42 @@ def analyze_sentiment():
 
 @app.route("/stats", methods=["GET"])
 def show_stats():
-    # ✅ Gerar gráfico
-    fig, ax = plt.subplots()
+    # ✅ Gerar gráfico com fundo escuro e cores compatíveis
     labels = list(sentiment_counts.keys())
     values = list(sentiment_counts.values())
 
-    ax.bar(labels, values, color=["green", "red", "gray"])
-    ax.set_title("Estatísticas de Sentimentos")
-    ax.set_ylabel("Quantidade")
-    ax.set_xlabel("Sentimento")
+    background_color = '#1B2430'  # fundo do site
+    text_color = '#ffffff'        # texto branco
+    bar_colors = ['#f57524', '#3081bf', '#ffffff']  # laranja, azul claro, branco
 
-    # ✅ Salvar gráfico em memória
+    fig, ax = plt.subplots(figsize=(6, 4), facecolor=background_color)
+    ax.set_facecolor(background_color)
+
+    bars = ax.bar(labels, values, color=bar_colors)
+
+    ax.set_title("Estatísticas de Sentimentos", color=text_color)
+    ax.set_ylabel("Quantidade", color=text_color)
+    ax.set_xlabel("Sentimento", color=text_color)
+
+    ax.tick_params(colors=text_color)
+    ax.spines['bottom'].set_color(text_color)
+    ax.spines['left'].set_color(text_color)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    for bar in bars:
+        height = bar.get_height()
+        ax.annotate(f'{height}',
+                    xy=(bar.get_x() + bar.get_width() / 2, height),
+                    xytext=(0, 5),
+                    textcoords="offset points",
+                    ha='center',
+                    va='bottom',
+                    color=text_color)
+
+    # ✅ Salvar gráfico em memória sem bordas extras
     buf = BytesIO()
-    plt.savefig(buf, format="png")
+    plt.savefig(buf, format="png", facecolor=background_color, bbox_inches='tight', transparent=True)
     buf.seek(0)
     plt.close()
 
