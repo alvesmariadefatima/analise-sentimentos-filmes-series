@@ -79,18 +79,27 @@
             font-size: 18px;
             color: var(--laranja);
         }
+
+        #statsChart {
+        display: none;
+        margin: 30px auto;
+        max-width: 90%;
+        border: 2px solid var(--azul-claro);
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🎥 Análise de Sentimentos de Comentários para Filmes e Séries</h1>
 
-        <!-- Exemplo de imagem (opcional) -->
-        <!-- <img src="URL_DA_IMAGEM" alt="Filme" class="filme-img"> -->
-
         <textarea id="userInput" placeholder="Digite um texto para análise..."></textarea>
         <button onclick="analyzeSentiment()">Analisar</button>
         <p id="result"></p>
+
+        <!-- Gráfico de estatísticas -->
+        <img id="statsChart" src="http://127.0.0.1:5000/stats" alt="Gráfico de Estatísticas">
     </div>
 
     <script>
@@ -109,6 +118,11 @@
 
             const data = await response.json();
             document.getElementById("result").innerText = `Sentimento: ${data.sentiment} (Confiança: ${data.confidence})`;
+
+            // Atualizar gráfico (evita cache com timestamp)
+            const chart = document.getElementById("statsChart");
+            chart.src = "http://127.0.0.1:5000/stats?t=" + new Date().getTime();
+            chart.style.display = "block";
         }
     </script>
 </body>
