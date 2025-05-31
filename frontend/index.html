@@ -1,129 +1,497 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise de Sentimentos de Filmes e Séries</title>
-    <link rel="stylesheet" href="C:\Users\arthu\Desktop\vital topicos\projeto.css">
-    <style>
-        :root {
-            --fundo: #1B2430;
-            --laranja: #f57524;
-            --azul-claro: #3081bf;
-            --texto: #ffffff;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Análise de Sentimentos de Filmes e Séries</title>
+  <link rel="stylesheet" href="C:\Users\arthu\Desktop\vital topicos\projeto.css">
+  <style>
+    :root {
+      --fundo: #1B2430;
+      --laranja: #f57524;
+      --azul-claro: #3081bf;
+      --texto: #ffffff;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: var(--fundo);
-            color: var(--texto);
-        }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: var(--fundo);
+      color: var(--texto);
+    }
 
-        .container {
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 20px;
-            text-align: center;
-        }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      text-align: center;
+    }
 
-        .filme-img {
-            width: 250px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-        }
+    .filme-img {
+      width: 250px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
 
-        h1 {
-            color: var(--laranja);
-        }
+    h1 {
+      color: var(--laranja);
+    }
 
-        textarea {
-            width: 100%;
-            height: 100px;
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 16px;
-            resize: none;
-            border: 2px solid var(--azul-claro);
-            border-radius: 8px;
-            background-color: #2e3a4a;
-            color: var(--texto);
-        }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 16px;
+      resize: none;
+      border: 2px solid var(--azul-claro);
+      border-radius: 8px;
+      background-color: #2e3a4a;
+      color: var(--texto);
+    }
 
-        textarea:focus {
-            outline: none;
-            border-color: var(--laranja);
-        }
+    textarea:focus {
+      outline: none;
+      border-color: var(--laranja);
+    }
 
-        button {
-            margin-top: 20px;
-            padding: 12px 24px;
-            background-color: var(--laranja);
-            color: var(--fundo);
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: var(--laranja);
+      color: var(--fundo);
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
 
-        button:hover {
-            background-color: var(--azul-claro);
-            color: #fff;
-        }
+    button:hover {
+      background-color: var(--azul-claro);
+      color: #fff;
+    }
 
-        #result {
-            margin-top: 25px;
-            font-weight: bold;
-            font-size: 18px;
-            color: var(--laranja);
-        }
+    #result {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 18px;
+      color: var(--laranja);
+    }
 
-        #statsChart {
-            display: none;
-            margin: 30px auto;
-            max-width: 90%;
-            border: transparent;
-            border-radius: 8px;
-            box-shadow: none;
-        }
-    </style>
+    .header-comentarios {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Título */
+  .header-comentarios h3 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: #ff9800; /* um laranja vibrante */
+        text-shadow: 0 0 6px rgba(255, 152, 0, 0.7);
+    }
+
+    #statsChart {
+      display: none;
+      margin: 30px auto;
+      max-width: 90%;
+      border-radius: 8px;
+    }
+
+    /* Estilo da caixa de comentários */
+    .comentarios-box {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background-color: #2e3a4a;
+      padding: 16px;
+      border-radius: 10px;
+      width: 350px;
+      height: 350px;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      z-index: 1000;
+      transition: height 0.3s ease, padding 0.3s ease;
+    }
+
+    .comentarios-box.minimizado {
+      height: 50px;
+      overflow: hidden;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+
+    .comentarios-box h3 {
+      margin-top: 0;
+      color: var(--laranja);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 6px;
+      text-align: left;
+    }
+
+    th {
+      color: var(--texto);
+    }
+
+    tr:nth-child(even) {
+      background-color: #3b4a5a;
+    }
+
+    .positivo {
+      color: #4CAF50;
+    }
+
+    .negativo {
+      color: #FF5252;
+    }
+
+    .neutro {
+      color: #FFC107;
+    }
+
+    .reload-btn {
+      margin-top: 8px;
+      font-size: 13px;
+      padding: 6px 12px;
+      background-color: var(--azul-claro);
+    }
+
+    .toggle-btn {
+        position: absolute;
+        top: 14px;
+        right: 12px;
+        background-color: transparent;
+        border: none;
+        color: var(--texto);
+        font-size: 22px;
+        cursor: pointer;
+        transition: transform 0.3s ease, color 0.3s ease;
+        z-index: 1001;
+    }
+
+     .conteudo-comentarios {
+    margin-top: 16px;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  /* Esconde conteúdo quando minimizado */
+  .comentarios-box.minimizado .conteudo-comentarios {
+    display: none;
+  }
+
+  /* Tabela estilizada */
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    font-size: 14px;
+    color: #ddd;
+  }
+
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+  }
+
+  th {
+    font-weight: 600;
+    color: #ffb74d;
+    border-bottom: 2px solid rgba(255, 152, 0, 0.6);
+  }
+
+  tr {
+    background: #34495e;
+    border-radius: 12px;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.15);
+  }
+
+  tr:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  .positivo {
+    color: #4CAF50;
+    font-weight: 600;
+  }
+
+  .negativo {
+    color: #e53935;
+    font-weight: 600;
+  }
+
+  .neutro {
+    color: #ffca28;
+    font-weight: 600;
+  }
+
+  /* Botão recarregar */
+  .reload-btn {
+    margin-top: 16px;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e2a38;
+    background: #ff9800;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.4);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .reload-btn:hover {
+    background: #ffc107;
+    box-shadow: 0 6px 12px rgba(255, 193, 7, 0.6);
+  }
+
+  /* Scrollbar customizada */
+  .conteudo-comentarios::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .conteudo-comentarios::-webkit-scrollbar-track {
+    background: #2e3a4a;
+    border-radius: 12px;
+  }
+
+  .conteudo-comentarios::-webkit-scrollbar-thumb {
+    background: #ff9800;
+    border-radius: 12px;
+  }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎥 Análise de Sentimentos de Comentários para Filmes e Séries</h1>
+  <div class="container">
+    <h1>🎥 Análise de Sentimentos de Comentários para Filmes e Séries</h1>
 
-        <textarea id="userInput" placeholder="Digite um texto para análise..."></textarea>
-        <button onclick="analyzeSentiment()">Analisar</button>
-        <p id="result"></p>
+    <textarea id="userInput" placeholder="Digite um texto para análise..."></textarea>
+    <button onclick="analyzeSentiment()">Analisar</button>
+    <p id="result"></p>
 
-        <!-- Gráfico de estatísticas -->
-        <img id="statsChart" src="http://127.0.0.1:5000/stats" alt="Gráfico de Estatísticas">
-    </div>
+    <img id="statsChart" src="http://127.0.0.1:5000/stats" alt="Gráfico de Estatísticas">
+  </div>
 
-    <script>
-        async function analyzeSentiment() {
-            const text = document.getElementById("userInput").value;
-            if (!text) {
-                alert("Por favor, insira um texto!");
-                return;
-            }
+<!-- Caixa lateral de comentários aleatórios -->
+<div class="comentarios-box" id="comentariosBox" onclick="verificarClique(event)">
+  <div class="header-comentarios">
+    <h3>Comentários</h3>
+    <button class="toggle-btn" onclick="alternarComentarios(event)" title="Minimizar/Maximizar">−</button>
+  </div>
+  <div class="conteudo-comentarios">
+    <table>
+      <thead>
+        <tr>
+          <th>Sentimento</th>
+          <th>Comentário</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-comentarios"></tbody>
+    </table>
+    <button class="reload-btn" onclick="carregarComentarios()">Ver outros comentários</button>
+  </div>
+</div>
+</div>
 
-            const response = await fetch("http://127.0.0.1:5000/analyze", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text: text })
-            });
+<style>
+  .comentarios-box {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 360px;
+    max-height: 380px;
+    background: linear-gradient(145deg, #283846, #1e2a38);
+    border-radius: 16px;
+    padding: 20px 24px 24px 24px;
+    box-shadow:
+      4px 4px 15px rgba(0,0,0,0.5),
+      -4px -4px 15px rgba(63,81,181,0.3);
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    overflow: hidden;
+    cursor: default;
+    z-index: 9999;
+  }
 
-            const data = await response.json();
-            document.getElementById("result").innerText = `Sentimento: ${data.sentiment} (Confiança: ${data.confidence})`;
+  .comentarios-box.minimizado {
+    max-height: 52px;
+    padding: 14px 24px;
+    cursor: pointer;
+  }
 
-            // Atualizar gráfico (evita cache com timestamp)
-            const chart = document.getElementById("statsChart");
-            chart.src = "http://127.0.0.1:5000/stats?t=" + new Date().getTime();
-            chart.style.display = "block";
-        }
-    </script>
+  .comentarios-box.minimizado .conteudo-comentarios {
+    display: none;
+  }
+
+  .comentarios-box h3 {
+    margin: 0;
+    color: var(--laranja);
+    font-size: 18px;
+  }
+
+  .toggle-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background-color: transparent;
+    border: none;
+    color: var(--texto);
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+    z-index: 1001;
+  }
+
+  .toggle-btn:hover {
+    transform: scale(1.2);
+    color: #FFD369; /* nova cor de hover: amarelo suave */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  th, td {
+    padding: 6px 8px;
+    text-align: left;
+  }
+
+  th {
+    color: var(--texto);
+  }
+
+  tr:nth-child(even) {
+    background-color: #3b4a5a;
+  }
+
+  .positivo {
+    color: #4CAF50;
+  }
+
+  .negativo {
+    color: #FF5252;
+  }
+
+  .neutro {
+    color: #FFC107;
+  }
+
+  .reload-btn {
+    margin-top: 10px;
+    font-size: 14px;
+    padding: 6px 12px;
+    background-color: var(--azul-claro);
+    color: var(--texto);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .reload-btn:hover {
+    background-color: #ff8c42; /* um laranja mais vivo para hover */
+  }
+</style>
+
+<script>
+  function alternarComentarios(event) {
+    event.stopPropagation(); // evita conflito com clique da caixa
+    const box = document.getElementById("comentariosBox");
+    box.classList.toggle("minimizado");
+    const toggleBtn = box.querySelector(".toggle-btn");
+    toggleBtn.textContent = box.classList.contains("minimizado") ? "+" : "−";
+  }
+
+  function verificaMinimizado(event) {
+    const box = document.getElementById("comentariosBox");
+    // Só maximiza se estiver minimizado e clicado fora do botão
+    if (box.classList.contains("minimizado") && !event.target.classList.contains("toggle-btn")) {
+      box.classList.remove("minimizado");
+      box.querySelector(".toggle-btn").textContent = "−";
+    }
+  }
+</script>
+
+  <script>
+    async function analyzeSentiment() {
+      const text = document.getElementById("userInput").value;
+      if (!text) {
+        alert("Por favor, insira um texto!");
+        return;
+      }
+
+      const response = await fetch("http://127.0.0.1:5000/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: text })
+      });
+
+      const data = await response.json();
+      document.getElementById("result").innerText = `Sentimento: ${data.sentiment} (Confiança: ${data.confidence})`;
+
+      const chart = document.getElementById("statsChart");
+      chart.src = "http://127.0.0.1:5000/stats?t=" + new Date().getTime();
+      chart.style.display = "block";
+    }
+
+    async function carregarComentarios() {
+      const response = await fetch("http://127.0.0.1:5000/comentarios");
+      const data = await response.json();
+
+      const tabela = document.getElementById("tabela-comentarios");
+      tabela.innerHTML = '';
+
+      const mapSentiment = {
+        positive: "positivo 😊",
+        negative: "negativo 😞",
+        neutral: "neutro 😐"
+      };
+
+      data.forEach(item => {
+        const sentimentoPT = mapSentiment[item.sentiment.toLowerCase()] || "neutro";
+        const textoComentario = item.comentario || item.review || item.comment || '';
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="${sentimentoPT}">${sentimentoPT}</td>
+          <td>${textoComentario}</td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    function alternarComentarios() {
+      const box = document.getElementById("comentariosBox");
+      const toggleBtn = box.querySelector(".toggle-btn");
+
+      if (box.classList.contains("minimizado")) {
+        box.classList.remove("minimizado");
+        toggleBtn.innerText = "−";
+      } else {
+        box.classList.add("minimizado");
+        toggleBtn.innerText = "+";
+      }
+    }
+
+    // Carrega comentários assim que a página abre
+    window.onload = carregarComentarios;
+  </script>
 </body>
 </html>
