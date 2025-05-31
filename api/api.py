@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import joblib
 import os
+import pandas as pd
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -24,6 +25,7 @@ else:
 
 # ✅ Dicionário para armazenar as estatísticas
 sentiment_counts = {"positivo": 0, "negativo": 0, "neutro": 0}
+
 
 @app.route("/analyze", methods=["POST"])
 def analyze_sentiment():
@@ -48,9 +50,29 @@ def analyze_sentiment():
     sentiment_counts[sentimento] += 1
 
     return jsonify({
-        "sentiment": f"{sentimento} 😊" if sentimento == "positivo" else f"{sentimento} 😞" if sentimento == "negativo" else f"{sentimento} 😐",
+        "sentiment": f"{sentimento} 😊" if sentimento == "positivo"
+                    else f"{sentimento} 😞" if sentimento == "negativo"
+                    else f"{sentimento} 😐",
         "confidence": f"{positivo_prob:.2f}"
     })
+
+
+@app.route("/comentarios")
+def comentarios():
+    df = pd.read_csv('dataset/IMDB_Dataset.csv', encoding='utf-8', on_bad_lines='skip')
+
+    def safe_sample(df, sentiment_label, n=3):
+        df_filtered = df[df['sentiment'] == sentiment_label]
+        if len(df_filtered) == 0:
+            return pd.DataFrame()
+        return df_filtered.sample(n=min(n, len(df_filtered)))
+
+    positivos = safe_sample(df, 'positive', 3)
+    negativos = safe_sample(df, 'negative', 3)
+
+    todos = pd.concat([positivos, negativos]).sample(frac=1).reset_index(drop=True)
+    return jsonify(todos.to_dict(orient='records'))
+
 
 @app.route("/stats", methods=["GET"])
 def show_stats():
@@ -58,9 +80,9 @@ def show_stats():
     labels = list(sentiment_counts.keys())
     values = list(sentiment_counts.values())
 
-    background_color = '#1B2430'  # fundo do site
-    text_color = '#ffffff'        # texto branco
-    bar_colors = ['#f57524', '#3081bf', '#ffffff']  # laranja, azul claro, branco
+    background_color = '#1B2430'
+    text_color = '#ffffff'
+    bar_colors = ['#f57524', '#3081bf', '#ffffff']
 
     fig, ax = plt.subplots(figsize=(6, 4), facecolor=background_color)
     ax.set_facecolor(background_color)
@@ -87,13 +109,13 @@ def show_stats():
                     va='bottom',
                     color=text_color)
 
-    # ✅ Salvar gráfico em memória sem bordas extras
     buf = BytesIO()
     plt.savefig(buf, format="png", facecolor=background_color, bbox_inches='tight', transparent=True)
     buf.seek(0)
     plt.close()
 
     return send_file(buf, mimetype='image/png')
+
 
 # ✅ Rodar a API
 if __name__ == "__main__":
