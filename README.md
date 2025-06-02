@@ -34,6 +34,10 @@ Este projeto foi desenvolvido utilizando uma combinação de tecnologias poderos
 
 ---
 
+## 💻 Print da Aplicação Rodando
+
+![Tela inicial da aplicação](assets/tela-inicial-analisador-sentimentos.png)
+
 ## 🧑‍💻 **Como Rodar o Projeto**
 
 ### **1. Clone o Repositório**
